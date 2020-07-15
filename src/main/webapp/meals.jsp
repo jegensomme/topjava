@@ -1,17 +1,7 @@
-<%@ page import="ru.javawebinar.topjava.model.MealTo" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %><%--
-  Created by IntelliJ IDEA.
-  User: vitovt
-  Date: 09.07.2020
-  Time: 15:28
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
@@ -20,6 +10,7 @@
         .normal {
             color: green;
         }
+
         .excess {
             color: red;
         }
@@ -29,7 +20,26 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
+    <form method="get" action="meals">
+        <input name="action" value="filter" type="hidden">
+        <dl>
+            <dt>От даты(включая)</dt>
+            <dd><input type="date" name="startDate"></dd>
+            <dt>До даты(включая)</dt>
+            <dd><input type="date" name="endDate"></dd>
+        </dl>
+        <dl>
+            <dt>От времени(включая)</dt>
+            <dd><input type="time" name="startTime"></dd>
+            <dt>До времени(включая)</dt>
+            <dd><input type="time" name="endTime"></dd>
+        </dl>
+        <button type="submit">Filter</button>
+        <button><a href="meals?action=all">Cancel</a></button>
+    </form>
     <h2>Meals</h2>
+    <a href="meals?action=create">Add Meal</a>
+    <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -41,22 +51,21 @@
         </tr>
         </thead>
         <c:forEach items="${meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
                         <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
                         <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
-                        ${TimeUtil.toString(meal.dateTime)}
+                        ${fn:formatDateTime(meal.dateTime)}
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?action=edit&mealId=<%=meal.getId()%>"/>Update</td>
-                <td><a href="meals?action=delete&mealId=<%=meal.getId()%>"/>Delete</td>
+                <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
+                <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
-    <p><a href="meals?action=insert">Add User</a></p>
 </section>
 </body>
 </html>
