@@ -1,17 +1,7 @@
-<%@ page import="ru.javawebinar.topjava.model.MealTo" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.time.LocalDateTime" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %><%--
-  Created by IntelliJ IDEA.
-  User: vitovt
-  Date: 09.07.2020
-  Time: 15:28
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
@@ -20,6 +10,7 @@
         .normal {
             color: green;
         }
+
         .excess {
             color: red;
         }
@@ -47,7 +38,7 @@
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
                         <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
                         <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
-                        ${TimeUtil.toString(meal.dateTime)}
+                        ${fn:formatDateTime(meal.dateTime)}
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
@@ -56,7 +47,6 @@
             </tr>
         </c:forEach>
     </table>
-    <p><a href="meals?action=insert">Add User</a></p>
 </section>
 </body>
 </html>
